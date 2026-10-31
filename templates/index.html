@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TaskFlow | Queue Monitor</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">T</span><div><strong>TaskFlow</strong><small>Queue Control Center</small></div></div>
+    <div class="live"><span></span> SYSTEM ONLINE</div>
+  </header>
+  <main class="container">
+    <section class="intro">
+      <div><p class="eyebrow">DEVELOPER OPERATIONS</p><h1>Task Queue Dashboard</h1>
+      <p class="sub">Submit jobs, monitor background workers and track execution health.</p></div>
+      <button class="secondary" id="refreshBtn">↻ Refresh</button>
+    </section>
+    <section class="stats">
+      <article class="stat"><span>Pending</span><strong id="pending">0</strong><small>Waiting in queue</small></article>
+      <article class="stat"><span>Processing</span><strong id="processing">0</strong><small>Currently executing</small></article>
+      <article class="stat"><span>Completed</span><strong id="completed">0</strong><small>Successfully processed</small></article>
+      <article class="stat"><span>Failed</span><strong id="failed">0</strong><small>Retries exhausted</small></article>
+    </section>
+    <section class="panel submit-panel">
+      <div class="panel-heading">
+  <div>
+    <p class="eyebrow">NEW JOB</p>
+    <h2>Submit a task</h2>
+  </div>
+  <div>
+    <span class="worker-pill" id="workerCount">2 workers</span>
+    <button class="secondary" type="button" id="workerToggle" data-paused="false">
+      Ⅱ Pause Workers
+    </button>
+  </div>
+</div>
+      <form id="taskForm">
+        <label>Task type<select id="taskType"><option value="echo">Echo message</option><option value="uppercase">Convert text to uppercase</option><option value="report">Generate report</option><option value="fail_once">Retry demonstration</option><option value="always_fail">Permanent failure</option></select></label>
+        <label>Priority<select id="priority"><option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option></select></label>
+        <label class="wide" id="payloadLabel">Message<input id="payload" placeholder="Enter a task message" value="Hello from TaskFlow"></label>
+        <button class="primary" type="submit">＋ Add to queue</button>
+      </form>
+      <p class="hint">Higher-priority tasks are selected first. Failed demo tasks are retried automatically.</p>
+      <div id="notice" role="status"></div>
+    </section>
+    <section class="panel">
+      <div class="panel-heading"><div><p class="eyebrow">LIVE OPERATIONS</p><h2>Recent tasks</h2></div>
+        <select id="filter"><option value="">All statuses</option><option value="pending">Pending</option><option value="processing">Processing</option><option value="completed">Completed</option><option value="failed">Failed</option></select>
+      </div>
+      <div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Task</th>
+        <th>Type</th>
+        <th>Priority</th>
+        <th>Picked Order</th>
+        <th>Worker</th>
+        <th>Status</th>
+        <th>Attempts</th>
+        <th>Result / Error</th>
+      </tr>
+    </thead>
+    <tbody id="taskRows">
+      <tr>
+        <td colspan="8" class="empty">Loading tasks…</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+    </section>
+    <footer>TaskFlow · Python · Flask · SQLite · Background workers</footer>
+  </main>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
